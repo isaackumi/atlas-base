@@ -1,5 +1,4 @@
 
-
 # RESTful API
 
 ## Getting Started
