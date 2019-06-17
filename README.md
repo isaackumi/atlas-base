@@ -1,10 +1,6 @@
 # atlas-base
 
-# atlas-base
-
-# User RESTful API
-
-This api allows a user using a mobile client or create experiences as they live through the world.
+# RESTful API
 
 ## Getting Started
 
