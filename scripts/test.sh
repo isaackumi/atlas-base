@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+ 
+#lint
+# (cd app && npm install --silent && npm run lint)
+=======
 if [ $NODE_ENV = "development" ]; then
     export DATABASE__URL="mongodb://mongo:27017/mosey_user_api"
     export JWT__SECRET_KEY="jwt_key_for_token_generation_in_shell" 
@@ -15,6 +19,7 @@ fi
 
 #lint
 # (cd app && npm install --silent && npm run lint)
+ 
 
 # #test authorize
 # (cd app/authorize && npm install --silent && npm test)
@@ -30,3 +35,4 @@ fi
 
 # #test Trip
 # (cd app/trips && npm install --silent && npm test)
+ 
