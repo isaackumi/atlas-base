@@ -1,0 +1,52 @@
+# This is a sample build configuration for JavaScript.
+# Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+# Check https://bitbucket.org/rjst/heroku-deploy to understand how to deploy to Heroku      
+image: node:10.13.0
+clone:
+  depth: full
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        script:
+          - npm install
+          - ./scripts/test.sh
+        services:
+          - postgres
+  branches:
+    master:
+      - step:
+          script: 
+            - npm install          
+            - ./scripts/test.sh 
+          services:
+            - mongo                   
+      - step:
+          name: Deploy to Staging
+          caches:
+            - node
+          deployment: staging
+          script:
+            - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$TEST_APP.git HEAD
+          services:
+            - postgres
+      - step:
+          name: Deploy to Production
+          caches:
+            - node
+          deployment: production
+          trigger: manual
+          script:
+            - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$PRODUCTION_APP.git HEAD
+          services:
+            - postgres                              
+
+definitions: 
+  services: 
+    postgres: 
+      image: postgres:11.2

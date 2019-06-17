@@ -1,0 +1,27 @@
+version: '2'
+services:
+  postgres:
+    image: postgres:11.2
+    ports:
+      - "5432:5432"
+    environment:
+      PGDATABASE: "waymo"
+      PGUSER: "waymo"
+      PGPASSWORD: "password"
+  api:    
+    build: .
+    image: ampersandlabs/waymo-api
+    environment:
+      NODE_ENV: development
+      PGDATABASE: "waymo"
+      PGUSER: "waymo"
+      PGPASSWORD: "password"
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    links:
+      - postgres
+    depends_on:
+      - postgres
