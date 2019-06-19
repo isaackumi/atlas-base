@@ -1,0 +1,30 @@
+version: '2'
+services:
+  postgres:
+    image: postgres:11.2
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DATABASE: "yithrah"
+      POSTGRES_USER: "yithrah"
+      POSTGRES_PASSWORD: "password"
+  api:    
+    build: .
+    image: ampersandlabs/yithrah-api
+    environment:
+      NODE_ENV: development
+      PGDATABASE: "yithrah"
+      PGUSER: "yithrah"
+      BABEL_ENV: development
+      PGPASSWORD: "password"
+      DB_HOST: host.docker.internal
+      DB_PORT: 5432
+      SECRET_KEY: "secretkey"
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    links:
+      - postgres
+    depends_on:
+      - postgres
