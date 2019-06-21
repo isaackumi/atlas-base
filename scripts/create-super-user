@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+// Do well to run `npm run build` before running this script
+const { models } = require('../dist/models')
+const argv = require('yargs').argv
+
+async function createSuperUser(firstName, lastName, password, email){
+    const superUser = await models.User.findOrCreate({where: {email},
+        defaults:{firstName, lastName, password, isSuperUser: true,
+        isVerified: true, isEnabled: true, role: 'superuser'
+        }})
+    return superUser
+}
+
+async function main(){
+    try {
+        const { password, email, firstName, lastName } = argv;
+        const superUser = await createSuperUser(firstName, lastName, password, email)
+        if (superUser){
+            console.log('Super user successfully created.')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+main()
